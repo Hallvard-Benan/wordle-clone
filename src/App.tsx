@@ -32,7 +32,7 @@ function App() {
     <div
       className={`w-screen h-screen ${theme === "dark" ? "bg-gray-900" : ""}`}
     >
-      <header className="grid grid-cols-3 items-center max-w-lg mx-auto py-4">
+      <header className="grid grid-cols-[1fr_auto_1fr] items-center max-w-lg mx-auto py-4">
         <ThemeToggle />
         <h1
           className={`text-2xl text-center text-nowrap ${
