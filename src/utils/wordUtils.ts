@@ -1,0 +1,18 @@
+export const getRandomWord = async (): Promise<string> => {
+  try {
+    const response = await fetch("/src/data/words.txt");
+    const text = await response.text();
+    const words = text.split("\n").filter((word) => word.trim().length === 5);
+
+    if (words.length === 0) {
+      throw new Error("No valid 5-letter words found in the word list");
+    }
+
+    const randomIndex = Math.floor(Math.random() * words.length);
+    console.log(randomIndex);
+    return words[randomIndex].trim().toUpperCase();
+  } catch (error) {
+    console.error("Error loading word list:", error);
+    return "APPLE"; // Fallback word in case of error
+  }
+};
