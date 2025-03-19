@@ -96,7 +96,7 @@ function LetterBox({
   return (
     <div
       data-testid={`letter-box-${index}`}
-      className={`size-12 rounded-sm flex items-center justify-center border  border-gray-500 text-xl font-bold ${getBackgroundColor()}`}
+      className={`size-12 rounded-sm dark:text-white flex items-center justify-center border  border-gray-500 text-xl font-bold ${getBackgroundColor()}`}
     >
       {letter}
     </div>
