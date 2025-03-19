@@ -1,6 +1,6 @@
 # WORDLE CLONE
 
-Deployed site: tbd
+Deployed site: https://wordgameclone.netlify.app/
 
 A game where users have 5 attempts to guess a 5 letter word.
 
