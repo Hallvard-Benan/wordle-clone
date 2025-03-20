@@ -1,4 +1,4 @@
-const WORD_LIST_URL = "/src/data/words.txt";
+const WORD_LIST_URL = "/words.txt";
 export const getRandomWord = async (): Promise<string> => {
   try {
     const response = await fetch(WORD_LIST_URL);
