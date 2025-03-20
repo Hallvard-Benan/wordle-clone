@@ -1,6 +1,6 @@
 import { GAME_CONFIG } from "../constants/gameConstants";
 import type { LetterState, RowState } from "../constants/gameConstants";
-import { getLetterStates, handleSubmitGuess } from "../utils/wordUtils";
+import { getLetterStates, handleSubmitGuess } from "../utils/gameUtils";
 
 interface GameActionsProps {
   targetWord: string;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { getRandomWord } from "../utils/wordUtils";
+import { getRandomWord } from "../utils/gameUtils";
 import { GAME_CONFIG } from "../constants/gameConstants";
 
 export const useWordManagement = () => {

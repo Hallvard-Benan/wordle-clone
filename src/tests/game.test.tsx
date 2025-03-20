@@ -3,7 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 import { GameContextProvider } from "../context/GameProvider";
 import App from "../App";
 import userEvent from "@testing-library/user-event";
-import { handleSubmitGuess } from "../utils/wordUtils";
+import { handleSubmitGuess } from "../utils/gameUtils";
 
 describe("Rendering", () => {
   beforeEach(() => {
