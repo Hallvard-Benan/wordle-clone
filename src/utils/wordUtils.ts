@@ -1,6 +1,7 @@
+const WORD_LIST_URL = "/src/data/words.txt";
 export const getRandomWord = async (): Promise<string> => {
   try {
-    const response = await fetch("/src/data/words.txt");
+    const response = await fetch(WORD_LIST_URL);
     const text = await response.text();
     const words = text.split("\n").filter((word) => word.trim().length === 5);
 
