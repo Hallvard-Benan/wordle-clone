@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { GAME_CONFIG } from "../constants/gameConstants";
-import type { GameState, LetterState } from "../constants/gameConstants";
+import type {
+  GameState,
+  LetterState,
+  RowState,
+} from "../constants/gameConstants";
 
 export const useGameState = () => {
   const [currentRow, setCurrentRow] = useState(0);
@@ -15,7 +19,7 @@ export const useGameState = () => {
   const [letterStates, setLetterStates] = useState<Record<string, LetterState>>(
     {}
   );
-  const [boardState, setBoardState] = useState<LetterState[][]>([]);
+  const [boardState, setBoardState] = useState<RowState[]>([]);
 
   const resetGameState = () => {
     setCurrentRow(0);
