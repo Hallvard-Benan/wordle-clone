@@ -30,7 +30,7 @@ const Keyboard = () => {
         <KeyButton
           letter="Enter"
           onClick={handleEnter}
-          className="bg-blue-500 text-white px-2"
+          className="bg-green-500 text-white px-2"
         />
         {row3.map((key) => (
           <KeyButton

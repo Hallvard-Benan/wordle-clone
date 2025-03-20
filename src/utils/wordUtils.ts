@@ -9,7 +9,6 @@ export const getRandomWord = async (): Promise<string> => {
     }
 
     const randomIndex = Math.floor(Math.random() * words.length);
-    console.log(randomIndex);
     return words[randomIndex].trim().toUpperCase();
   } catch (error) {
     console.error("Error loading word list:", error);

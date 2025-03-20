@@ -41,11 +41,13 @@ function App() {
         >
           GUESS THE WORD
         </h1>
+        <div className="flex justify-end items-center">
+          <WelcomeModal />
+        </div>
       </header>
       <main className="sm:w-lg mx-auto grid justify-center gap-6 py-4">
         <GameBoard />
         <Keyboard />
-        <WelcomeModal />
         <GameOverModal />
       </main>
     </div>
