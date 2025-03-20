@@ -6,3 +6,7 @@ export const GAME_CONFIG = {
 
 export type GameState = "playing" | "won" | "lost";
 export type LetterState = "correct" | "present" | "absent" | "unused";
+export type RowState = {
+  letter: string;
+  state: LetterState;
+}[];

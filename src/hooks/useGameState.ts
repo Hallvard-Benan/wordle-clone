@@ -15,6 +15,7 @@ export const useGameState = () => {
   const [letterStates, setLetterStates] = useState<Record<string, LetterState>>(
     {}
   );
+  const [boardState, setBoardState] = useState<LetterState[][]>([]);
 
   const resetGameState = () => {
     setCurrentRow(0);
@@ -27,6 +28,7 @@ export const useGameState = () => {
     setSubmittedGuesses([]);
     setGameState("playing");
     setLetterStates({});
+    setBoardState([]);
   };
 
   return {
@@ -41,7 +43,9 @@ export const useGameState = () => {
     gameState,
     setGameState,
     letterStates,
+    boardState,
     setLetterStates,
+    setBoardState,
     resetGameState,
   };
 };

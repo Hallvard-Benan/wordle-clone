@@ -1,5 +1,6 @@
 import { GAME_CONFIG } from "../constants/gameConstants";
-import type { LetterState } from "../constants/gameConstants";
+import type { LetterState, RowState } from "../constants/gameConstants";
+import { getLetterStates, handleSubmitGuess } from "../utils/wordUtils";
 
 interface GameActionsProps {
   targetWord: string;
@@ -7,7 +8,7 @@ interface GameActionsProps {
   currentLetterPos: number;
   guesses: string[][];
   gameState: "playing" | "won" | "lost";
-  letterStates: Record<string, LetterState>;
+  boardState: RowState[];
   setCurrentLetterPos: (value: number | ((prev: number) => number)) => void;
   setGuesses: (value: string[][] | ((prev: string[][]) => string[][])) => void;
   setSubmittedGuesses: (
@@ -18,6 +19,9 @@ interface GameActionsProps {
     value:
       | Record<string, LetterState>
       | ((prev: Record<string, LetterState>) => Record<string, LetterState>)
+  ) => void;
+  setBoardState: (
+    value: RowState[] | ((prev: RowState[]) => RowState[])
   ) => void;
   setCurrentRow: (value: number | ((prev: number) => number)) => void;
   resetGameState: () => void;
@@ -30,12 +34,13 @@ export const useGameActions = ({
   currentLetterPos,
   guesses,
   gameState,
-  letterStates,
+  boardState,
   setCurrentLetterPos,
   setGuesses,
   setSubmittedGuesses,
   setGameState,
   setLetterStates,
+  setBoardState,
   setCurrentRow,
   resetGameState,
   loadNewWord,
@@ -58,31 +63,14 @@ export const useGameActions = ({
     if (currentLetterPos < GAME_CONFIG.LETTER_COUNT) return;
 
     const currentGuess = guesses[currentRow].join("");
-    const targetArray = targetWord.split("");
-    const newLetterStates = { ...letterStates };
 
-    const remainingTargetLetters: Record<string, number> = {};
-    targetArray.forEach((char, i) => {
-      if (currentGuess[i] === char) {
-        newLetterStates[char] = "correct";
-      } else {
-        remainingTargetLetters[char] = (remainingTargetLetters[char] || 0) + 1;
-      }
-    });
+    const rowState = handleSubmitGuess(currentGuess, targetWord);
+    const newBoardState = [...boardState, rowState];
+    setBoardState(newBoardState);
 
-    currentGuess.split("").forEach((char, i) => {
-      if (char !== targetArray[i]) {
-        if (remainingTargetLetters[char] && remainingTargetLetters[char] > 0) {
-          remainingTargetLetters[char]--;
-          newLetterStates[char] =
-            newLetterStates[char] === "correct" ? "correct" : "present";
-        } else {
-          newLetterStates[char] = "absent";
-        }
-      }
-    });
+    const newLetterStates = getLetterStates(newBoardState);
 
-    setLetterStates(newLetterStates);
+    setLetterStates((prev) => ({ ...prev, ...newLetterStates }));
 
     if (currentGuess === targetWord) {
       setSubmittedGuesses((prev) => [...prev, currentRow]);

@@ -39,13 +39,8 @@ function LetterBox({
   index: number;
   row: number;
 }) {
-  const {
-    targetWord,
-    guesses,
-    submittedGuesses,
-    currentRow,
-    currentLetterPos,
-  } = useGameContext();
+  const { submittedGuesses, currentRow, currentLetterPos, boardState } =
+    useGameContext();
   const { theme } = useTheme();
 
   const getBackgroundColor = () => {
@@ -55,46 +50,35 @@ function LetterBox({
       return "";
     }
 
-    const targetWordArray = targetWord.split("");
-    const guessArray = guesses[row];
-
-    const greenIndices = new Set<number>();
-    const remainingTargetLetters: Record<string, number> = {};
-
-    targetWordArray.forEach((char, i) => {
-      if (guessArray[i] === char) {
-        greenIndices.add(i);
-      } else {
-        remainingTargetLetters[char] = (remainingTargetLetters[char] || 0) + 1;
-      }
-    });
-
-    if (greenIndices.has(index)) {
-      return "bg-green-500 text-white border-0";
+    if (boardState[row][index].state === "correct") {
+      return "bg-green-500 text-white";
     }
 
-    if (remainingTargetLetters[letter] && remainingTargetLetters[letter] > 0) {
-      let yellowsUsed = 0;
-      for (let i = 0; i < index; i++) {
-        if (!greenIndices.has(i) && guessArray[i] === letter) {
-          yellowsUsed++;
-        }
-      }
-
-      if (yellowsUsed < remainingTargetLetters[letter]) {
-        remainingTargetLetters[letter]--;
-        return "bg-yellow-500 text-white border-0";
-      }
+    if (boardState[row][index].state === "present") {
+      return "bg-yellow-500 text-white";
     }
 
-    return "bg-gray-500 text-white border-0";
+    if (boardState[row][index].state === "absent") {
+      return "bg-gray-500 text-white";
+    }
+
+    return "bg-gray-500 text-white ";
   };
 
   return (
     <div
       data-testid={`letter-box-${index}`}
-      className={`size-12 sm:size-16 rounded-sm  flex items-center justify-center border  border-gray-500 text-xl font-bold ${getBackgroundColor()} ${
+      className={`size-12 sm:size-16 rounded-sm transition  
+        duration-500 delay-${
+          index * 2
+        } flex items-center justify-center border  border-gray-500 text-xl font-bold ${getBackgroundColor()} ${
         theme === "dark" ? "text-white" : ""
+      } ${
+        submittedGuesses.includes(row)
+          ? `animation-delay-${
+              index * 2
+            } animate-[flip_0.5s] border-transparent`
+          : ""
       }`}
     >
       {letter}

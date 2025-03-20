@@ -9,7 +9,7 @@ function GameOverModal() {
     if (gameState === "won" || gameState === "lost") {
       const timer = setTimeout(() => {
         setIsOpen(true);
-      }, 500);
+      }, 1500);
 
       return () => clearTimeout(timer);
     } else {

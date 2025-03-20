@@ -1,5 +1,9 @@
 import { createContext, useContext } from "react";
-import type { GameState, LetterState } from "../constants/gameConstants";
+import type {
+  GameState,
+  LetterState,
+  RowState,
+} from "../constants/gameConstants";
 
 interface GameContextType {
   currentRow: number;
@@ -9,6 +13,7 @@ interface GameContextType {
   currentLetterPos: number;
   targetWord: string;
   letterStates: Record<string, LetterState>;
+  boardState: RowState[];
   setTargetWord: (word: string) => void;
   handleLetterInput: (letter: string) => void;
   handleEnter: () => void;

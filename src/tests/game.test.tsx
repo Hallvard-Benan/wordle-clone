@@ -3,8 +3,9 @@ import { render, screen, within } from "@testing-library/react";
 import { GameContextProvider } from "../context/GameProvider";
 import App from "../App";
 import userEvent from "@testing-library/user-event";
+import { handleSubmitGuess } from "../utils/wordUtils";
 
-describe("Game", () => {
+describe("Rendering", () => {
   beforeEach(() => {
     render(
       <GameContextProvider>
@@ -86,5 +87,84 @@ describe("Game", () => {
     expect(letterBoxes[3].classList).toContain("bg-gray-500");
     expect(letterBoxes[3].classList).not.toContain("bg-yellow-500");
     expect(letterBoxes[4].classList).toContain("bg-yellow-500");
+  });
+});
+
+describe("handleSubmitGuess", () => {
+  it("should return the correct letter states if guess matches target", () => {
+    const boardState = handleSubmitGuess("APPLE", "APPLE");
+    expect(boardState).toEqual([
+      { letter: "A", state: "correct" },
+      { letter: "P", state: "correct" },
+      { letter: "P", state: "correct" },
+      { letter: "L", state: "correct" },
+      { letter: "E", state: "correct" },
+    ]);
+  });
+
+  it("should mark letters as absent if they are not in the target word", () => {
+    const boardState = handleSubmitGuess("BRICK", "APPLE");
+    expect(boardState).toEqual([
+      { letter: "B", state: "absent" },
+      { letter: "R", state: "absent" },
+      { letter: "I", state: "absent" },
+      { letter: "C", state: "absent" },
+      { letter: "K", state: "absent" },
+    ]);
+  });
+
+  it("should mark letters as present if they are in the target word but wrong position", () => {
+    const boardState = handleSubmitGuess("LAEPP", "APPLE");
+    expect(boardState).toEqual([
+      { letter: "L", state: "present" },
+      { letter: "A", state: "present" },
+      { letter: "E", state: "present" },
+      { letter: "P", state: "present" },
+      { letter: "P", state: "present" },
+    ]);
+  });
+
+  it("should mark letters as correct if they are in the right position", () => {
+    const boardState = handleSubmitGuess("AMPLE", "APPLE");
+    expect(boardState).toEqual([
+      { letter: "A", state: "correct" },
+      { letter: "M", state: "absent" },
+      { letter: "P", state: "correct" },
+      { letter: "L", state: "correct" },
+      { letter: "E", state: "correct" },
+    ]);
+  });
+
+  it("should handle duplicate letters correctly when one is in correct position", () => {
+    const boardState = handleSubmitGuess("PAPER", "APPLE");
+    expect(boardState).toEqual([
+      { letter: "P", state: "present" },
+      { letter: "A", state: "present" },
+      { letter: "P", state: "correct" },
+      { letter: "E", state: "present" },
+      { letter: "R", state: "absent" },
+    ]);
+  });
+
+  it("should not mark duplicate letters as present if target has fewer occurrences", () => {
+    const boardState = handleSubmitGuess("PEEPS", "APPLE");
+    expect(boardState).toEqual([
+      { letter: "P", state: "present" },
+      { letter: "E", state: "present" },
+      { letter: "E", state: "absent" },
+      { letter: "P", state: "present" },
+      { letter: "S", state: "absent" },
+    ]);
+  });
+
+  it("should handle mixed cases of correct, present and absent letters", () => {
+    const boardState = handleSubmitGuess("PLATE", "APPLE");
+    expect(boardState).toEqual([
+      { letter: "P", state: "present" },
+      { letter: "L", state: "present" },
+      { letter: "A", state: "present" },
+      { letter: "T", state: "absent" },
+      { letter: "E", state: "correct" },
+    ]);
   });
 });
