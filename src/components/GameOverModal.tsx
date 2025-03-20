@@ -6,7 +6,15 @@ function GameOverModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setIsOpen(gameState === "won" || gameState === "lost");
+    if (gameState === "won" || gameState === "lost") {
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setIsOpen(false);
+    }
   }, [gameState]);
 
   return (
@@ -20,6 +28,15 @@ function GameOverModal() {
           <>
             <h2 className="text-2xl font-bold">Congratulations!</h2>
             <p className="text-lg">You won!</p>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                resetGame();
+              }}
+              className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 hover:cursor-pointer transition-all duration-300"
+            >
+              Play again with a new word
+            </button>
           </>
         )}
         {gameState === "lost" && (
@@ -31,7 +48,7 @@ function GameOverModal() {
                 setIsOpen(false);
                 resetGame();
               }}
-              className="bg-blue-500 text-white p-2 rounded-md"
+              className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 hover:cursor-pointer transition-all duration-300"
             >
               Try again with a new word
             </button>

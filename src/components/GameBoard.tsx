@@ -1,4 +1,5 @@
 import { useGameContext } from "../context/GameContext";
+import { useTheme } from "../context/ThemeContext";
 
 const GameBoard = () => {
   const { guesses } = useGameContext();
@@ -45,6 +46,7 @@ function LetterBox({
     currentRow,
     currentLetterPos,
   } = useGameContext();
+  const { theme } = useTheme();
 
   const getBackgroundColor = () => {
     if (!submittedGuesses.includes(row)) {
@@ -56,11 +58,9 @@ function LetterBox({
     const targetWordArray = targetWord.split("");
     const guessArray = guesses[row];
 
-    // First pass: Mark exact matches (green)
     const greenIndices = new Set<number>();
     const remainingTargetLetters: Record<string, number> = {};
 
-    // Count remaining letters after marking greens
     targetWordArray.forEach((char, i) => {
       if (guessArray[i] === char) {
         greenIndices.add(i);
@@ -69,14 +69,11 @@ function LetterBox({
       }
     });
 
-    // If this position is green, return immediately
     if (greenIndices.has(index)) {
       return "bg-green-500 text-white border-0";
     }
 
-    // Second pass: Mark yellow squares, but only if we haven't used up all instances of that letter
     if (remainingTargetLetters[letter] && remainingTargetLetters[letter] > 0) {
-      // Check all positions before this one to see how many yellows we've already used
       let yellowsUsed = 0;
       for (let i = 0; i < index; i++) {
         if (!greenIndices.has(i) && guessArray[i] === letter) {
@@ -96,7 +93,9 @@ function LetterBox({
   return (
     <div
       data-testid={`letter-box-${index}`}
-      className={`size-12 rounded-sm dark:text-white flex items-center justify-center border  border-gray-500 text-xl font-bold ${getBackgroundColor()}`}
+      className={`size-12 rounded-sm  flex items-center justify-center border  border-gray-500 text-xl font-bold ${getBackgroundColor()} ${
+        theme === "dark" ? "text-white" : ""
+      }`}
     >
       {letter}
     </div>
