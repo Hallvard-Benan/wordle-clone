@@ -30,9 +30,11 @@ function App() {
 
   return (
     <div
-      className={`w-screen h-screen ${theme === "dark" ? "bg-gray-900" : ""}`}
+      className={`w-screen h-[100dvh] flex flex-col justify-between items-center py-4 ${
+        theme === "dark" ? "bg-gray-900" : ""
+      }`}
     >
-      <header className="grid grid-cols-[1fr_auto_1fr] items-center max-w-lg mx-auto py-4">
+      <header className="grid grid-cols-[1fr_auto_1fr] items-center w-lg max-w-[calc(100vw-8px)] mx-auto py-4 px-2">
         <ThemeToggle />
         <h1
           className={`text-2xl text-center text-nowrap ${
@@ -45,11 +47,9 @@ function App() {
           <WelcomeModal />
         </div>
       </header>
-      <main className="sm:w-lg mx-auto grid justify-center gap-6 py-4">
-        <GameBoard />
-        <Keyboard />
-        <GameOverModal />
-      </main>
+      <GameBoard />
+      <Keyboard />
+      <GameOverModal />
     </div>
   );
 }

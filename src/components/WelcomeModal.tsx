@@ -13,6 +13,8 @@ function WelcomeModal() {
   return (
     <>
       <button
+        role="button"
+        aria-label="Help"
         onClick={() => setIsNewPlayer(true)}
         className={`hover:cursor-pointer text-2xl ${
           theme === "dark" ? "text-white" : ""
