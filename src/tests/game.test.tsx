@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import { GameContextProvider } from "../context/GameProvider";
 import App from "../App";
@@ -7,11 +7,23 @@ import { handleSubmitGuess } from "../utils/gameUtils";
 
 describe("Rendering", () => {
   beforeEach(() => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation(() =>
+        Promise.resolve({
+          text: () => Promise.resolve("APPLE"),
+        })
+      )
+    );
     render(
       <GameContextProvider>
         <App />
       </GameContextProvider>
     );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("should render 5 rows of letter 5 boxes", () => {
